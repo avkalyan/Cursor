@@ -2,6 +2,14 @@ import ArticleActions from './ArticleActions';
 import { Link } from 'react-router-dom';
 import React from 'react';
 
+const formatDate = date => {
+  const dateObj = new Date(date);
+  const month = dateObj.getMonth() + 1;
+  const day = dateObj.getDate();
+  const year = dateObj.getFullYear();
+  return `${month}/${day}/${year}`;
+};
+
 const ArticleMeta = props => {
   const article = props.article;
   return (
@@ -15,7 +23,7 @@ const ArticleMeta = props => {
           {article.author.username}
         </Link>
         <span className="date">
-          {new Date(article.createdAt).toDateString()}
+          {formatDate(article.createdAt)}
         </span>
       </div>
 
