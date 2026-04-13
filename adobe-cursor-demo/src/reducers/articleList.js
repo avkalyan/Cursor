@@ -16,13 +16,16 @@ export default (state = {}, action) => {
   switch (action.type) {
     case ARTICLE_FAVORITED:
     case ARTICLE_UNFAVORITED:
+      if (action.error || !action.payload || !action.payload.article) {
+        return state;
+      }
       return {
         ...state,
         articles: state.articles.map(article => {
           if (article.slug === action.payload.article.slug) {
             return {
               ...article,
-              favorited: action.payload.article.favorited,
+              favorited: !action.payload.article.favorited,
               favoritesCount: action.payload.article.favoritesCount
             };
           }
@@ -30,6 +33,9 @@ export default (state = {}, action) => {
         })
       };
     case SET_PAGE:
+      if (action.error || !action.payload) {
+        return state;
+      }
       return {
         ...state,
         articles: action.payload.articles,
@@ -37,6 +43,9 @@ export default (state = {}, action) => {
         currentPage: action.page
       };
     case APPLY_TAG_FILTER:
+      if (action.error || !action.payload) {
+        return state;
+      }
       return {
         ...state,
         pager: action.pager,
@@ -47,6 +56,22 @@ export default (state = {}, action) => {
         currentPage: 0
       };
     case HOME_PAGE_LOADED:
+      if (
+        action.error ||
+        !action.payload ||
+        !action.payload[0] ||
+        !action.payload[1]
+      ) {
+        return {
+          ...state,
+          pager: action.pager,
+          tags: [],
+          articles: [],
+          articlesCount: 0,
+          currentPage: 0,
+          tab: action.tab
+        };
+      }
       return {
         ...state,
         pager: action.pager,
@@ -59,6 +84,9 @@ export default (state = {}, action) => {
     case HOME_PAGE_UNLOADED:
       return {};
     case CHANGE_TAB:
+      if (action.error || !action.payload) {
+        return state;
+      }
       return {
         ...state,
         pager: action.pager,
@@ -70,6 +98,15 @@ export default (state = {}, action) => {
       };
     case PROFILE_PAGE_LOADED:
     case PROFILE_FAVORITES_PAGE_LOADED:
+      if (action.error || !action.payload || !action.payload[1]) {
+        return {
+          ...state,
+          pager: action.pager,
+          articles: [],
+          articlesCount: 0,
+          currentPage: 0
+        };
+      }
       return {
         ...state,
         pager: action.pager,

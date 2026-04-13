@@ -10,16 +10,18 @@ import {
 
 export default (state = {}, action) => {
   switch (action.type) {
-    case EDITOR_PAGE_LOADED:
+    case EDITOR_PAGE_LOADED: {
+      const article = action.payload && action.payload.article;
       return {
         ...state,
-        articleSlug: action.payload ? action.payload.article.slug : '',
-        title: action.payload ? action.payload.article.title : '',
-        description: action.payload ? action.payload.article.description : '',
-        body: action.payload ? action.payload.article.body : '',
+        articleSlug: article ? article.slug : '',
+        title: article ? article.title : '',
+        description: article ? article.description : '',
+        body: article ? article.body : '',
         tagInput: '',
-        tagList: action.payload ? action.payload.article.tagList : []
+        tagList: article ? article.tagList : []
       };
+    }
     case EDITOR_PAGE_UNLOADED:
       return {};
     case ARTICLE_SUBMITTED:

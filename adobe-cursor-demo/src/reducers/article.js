@@ -8,6 +8,14 @@ import {
 export default (state = {}, action) => {
   switch (action.type) {
     case ARTICLE_PAGE_LOADED:
+      if (
+        action.error ||
+        !action.payload ||
+        !action.payload[0] ||
+        !action.payload[1]
+      ) {
+        return { ...state, article: null, comments: null };
+      }
       return {
         ...state,
         article: action.payload[0].article,
