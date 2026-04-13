@@ -25,7 +25,7 @@ export default (state = {}, action) => {
           if (article.slug === action.payload.article.slug) {
             return {
               ...article,
-              favorited: !action.payload.article.favorited,
+              favorited: action.payload.article.favorited,
               favoritesCount: action.payload.article.favoritesCount
             };
           }
